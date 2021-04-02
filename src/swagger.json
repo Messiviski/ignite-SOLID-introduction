@@ -1,0 +1,245 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Atlas",
+    "description": "Esta é uma documentação sobre a Atlas API.",
+    "version": "1.0.0",
+    "contact": {
+      "email": "messiasolimpio@hotmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Gerenciamento de usuários"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Cria um novo usuário.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "Messias",
+                  "email": "oi@teste.com.br"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Operação realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "7c9b4d3b-0cf8-430c-81d4-b4129fb843d5",
+                    "admin": false,
+                    "name": "Messias",
+                    "email": "oi@teste.com.br",
+                    "created_at": "2021-04-02T00:11:47.152Z",
+                    "updated_at": "2021-04-02T00:11:47.152Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email já está sendo utilizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": "User already exists!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "summary": "Retorna todos os usuários.",
+        "description": "Somente usuário admin pode acessar",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "items": {
+              "type": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": [
+                    {
+                      "id": "f225de5b-87d5-41b7-9c98-b845b5866303",
+                      "admin": false,
+                      "name": "Messias",
+                      "email": "oi@teste.com.br",
+                      "created_at": "2021-04-02T00:31:51.030Z",
+                      "updated_at": "2021-04-02T00:31:51.030Z"
+                    },
+                    {
+                      "id": "c4013e8c-65f6-43f8-82d7-18d15b4df36e",
+                      "admin": true,
+                      "name": "Teste",
+                      "email": "teste@teste.com.br",
+                      "created_at": "2021-04-02T00:32:27.862Z",
+                      "updated_at": "2021-04-02T00:36:21.761Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email já está sendo utilizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": "You don't have admin permission!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Retorna todos os usuários.",
+        "parameters": [
+          {
+            "name": "user_id",
+            "description": "ID do usuário",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "items": {
+              "type": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": [
+                    {
+                      "id": "f225de5b-87d5-41b7-9c98-b845b5866303",
+                      "admin": false,
+                      "name": "Messias",
+                      "email": "oi@teste.com.br",
+                      "created_at": "2021-04-02T00:31:51.030Z",
+                      "updated_at": "2021-04-02T00:31:51.030Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "error": "User does not exists!"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Toma admin um usuário.",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type":"string",
+            "items": {
+              "type": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operação realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": [
+                    {
+                      "id": "f225de5b-87d5-41b7-9c98-b845b5866303",
+                      "admin": false,
+                      "name": "Messias",
+                      "email": "oi@teste.com.br",
+                      "created_at": "2021-04-02T00:31:51.030Z",
+                      "updated_at": "2021-04-02T00:31:51.030Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description":"Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": [
+                    {
+                      "error":"User does not exists"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
